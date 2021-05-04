@@ -98,11 +98,11 @@ public class DataManager {
     public static void loadFile() {
         File file;
         int id;
-        System.out.print("Enter a file name to load:");
+        System.out.print("Enter a file name to load: ");
         file = new File(scan.nextLine());
         System.out.println();
         while (!file.exists()) {
-            System.out.print("Enter a file name to load:");
+            System.out.print("Enter a file name to load: ");
             file = new File(scan.nextLine());
             System.out.println();
         }

@@ -4,6 +4,7 @@ public class UserInterface {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         int option = 0;
+        DataManager library = new DataManager();
         System.out.println("Welcome to the library");
         while (option != 7) {
             System.out.println("What would you like to do?");
@@ -19,22 +20,22 @@ public class UserInterface {
             System.out.println();
             switch (option) {
                 case 1:
-                    DataManager.checkOut();
+                    library.checkOut();
                     break;
                 case 2:
-                    DataManager.checkIn();
+                    library.checkIn();
                     break;
                 case 3:
-                    DataManager.getNumberOfCopies();
+                    library.getNumberOfCopies();
                     break;
                 case 4:
-                    DataManager.getItemType();
+                    library.getItemType();
                     break;
                 case 5:
-                    DataManager.loadFile();
+                    library.loadFile();
                     break;
                 case 6:
-                    DataManager.saveFile();
+                    library.saveFile();
                 case 7:
                     break;
                 default:
