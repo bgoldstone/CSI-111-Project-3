@@ -14,6 +14,7 @@ public class DataManager {
     private static Scanner scan;
     private static int id;
     private static String type;
+    private static boolean isLoaded = false;
 
 
     public DataManager() {
@@ -28,6 +29,11 @@ public class DataManager {
      * Attempts to check-in an item.
      */
     public static void checkIn() {
+        if (!isLoaded) {
+            System.out.println("No file loaded!!\n");
+            return;
+        }
+
         //Gets and Checks ID.
         if (getID()) {
             library.get(id).setCopies(library.get(id).getCopies() + 1);
@@ -39,6 +45,11 @@ public class DataManager {
      * Attempts to check-out an item.
      */
     public static void checkOut() {
+        if (!isLoaded) {
+            System.out.println("No file loaded!!\n");
+            return;
+        }
+
         //Gets and Checks ID.
         if (getID()) {
 
@@ -57,6 +68,11 @@ public class DataManager {
      * Gets number of Copies of Item.
      */
     public static void getNumberOfCopies() {
+        if (!isLoaded) {
+            System.out.println("No file loaded!!\n");
+            return;
+        }
+
         //Prints name and number of copies.
         if (getID()) {
             System.out.printf("%s Number of copies: %d%n", library.get(id).getName(), library.get(id).getCopies());
@@ -64,6 +80,11 @@ public class DataManager {
     }
 
     public static void getItemType() {
+        if (!isLoaded) {
+            System.out.println("No file loaded!!\n");
+            return;
+        }
+
         //Gets user selection.
         System.out.print("Would you like to see \nBooks,\nMovies, \nor Music\n(Books, Movies, Music)? ");
         type = scan.nextLine().toLowerCase();
@@ -160,13 +181,18 @@ public class DataManager {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
+        isLoaded = true;
     }
 
     /**
      * Saves item data to a file.
      */
     public static void saveFile() {
+        if (!isLoaded) {
+            System.out.println("No file loaded!!\n");
+            return;
+        }
+
         System.out.print("Enter a file name to save to: ");
         try {
             PrintWriter pw = new PrintWriter(scan.nextLine());

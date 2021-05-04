@@ -1,9 +1,10 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUI extends JFrame{
-    private JPanel Library;
+    private JPanel panel;
     private JComboBox dropDownMenu;
     private JButton checkOutButton;
     private JButton checkInButton;
@@ -16,13 +17,49 @@ public class GUI extends JFrame{
     public GUI(String title) {
         super(title);
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-        this.setContentPane(Library);
+        this.setContentPane(panel);
         this.pack();
         dm = new DataManagerGUI();
+
+        //Sets size
+        panel.setPreferredSize(new Dimension(500,500));
+
+        //Basically centers on screen
+        this.setLocationRelativeTo(null);
         loadFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dm.loadFile();
+            }
+        });
+        saveFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dm.saveFile();
+            }
+        });
+        checkOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dm.checkOut();
+            }
+        });
+        checkInButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dm.checkIn();
+            }
+        });
+        availableCopiesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dm.getNumberOfCopies();
+            }
+        });
+        itemListingsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dm.getItemType();
             }
         });
     }

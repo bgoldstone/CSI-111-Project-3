@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -14,6 +15,9 @@ public class DataManagerGUI {
     private static Scanner scan;
     private static int id;
     private static String type;
+    private static String[] options = {"Books", "Movies", "Music"};
+    private static StringBuilder itemList;
+    private static boolean isLoaded = false;
 
 
     public DataManagerGUI() {
@@ -22,6 +26,7 @@ public class DataManagerGUI {
         movieCollection = new LinkedList<>();
         library = new HashMap<>();
         scan = new Scanner(System.in);
+        itemList = new StringBuilder();
     }
 
     /**
@@ -29,6 +34,11 @@ public class DataManagerGUI {
      */
     public static void checkIn() {
         //Gets and Checks ID.
+        if (!isLoaded) {
+            JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         if (getID()) {
             library.get(id).setCopies(library.get(id).getCopies() + 1);
             System.out.printf("Successfully checked in %s!%n", library.get(id).getName());
@@ -40,14 +50,19 @@ public class DataManagerGUI {
      */
     public static void checkOut() {
         //Gets and Checks ID.
+        if (!isLoaded) {
+            JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         if (getID()) {
 
             //Checks if has any copies
             if ((library.get(id).getCopies() >= 1)) {
                 library.get(id).setCopies(library.get(id).getCopies() - 1);
-                System.out.printf("Successfully checked out %s!%n", library.get(id).getName());
+                JOptionPane.showMessageDialog(null, "Successfully checked out " + library.get(id).getName() + "!", "", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                System.out.printf("Not enough copies of %s!%n", library.get(id).getName());
+                JOptionPane.showMessageDialog(null, "Not enough copies of " + library.get(id).getName() + "!", "", JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -58,46 +73,50 @@ public class DataManagerGUI {
      */
     public static void getNumberOfCopies() {
         //Prints name and number of copies.
+        if (!isLoaded) {
+            JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         if (getID()) {
-            System.out.printf("%s Number of copies: %d%n", library.get(id).getName(), library.get(id).getCopies());
+            JOptionPane.showMessageDialog(null, library.get(id).getName() + " Number of copies: " + library.get(id).getCopies() + "!", "", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
     public static void getItemType() {
-        //Gets user selection.
-        System.out.print("Would you like to see \nBooks,\nMovies, \nor Music\n(Books, Movies, Music)? ");
-        type = scan.nextLine().toLowerCase();
-        System.out.println();
-
-        //If invalid string.
-        while (!type.equals("books") && !type.equals("movies") && !type.equals("music")) {
-            System.out.print("Invalid Option\nWould you like to see \nBooks,\nMovies, \n or Music\n(Books, Movies, Music)? ");
-            type = scan.nextLine().toLowerCase();
-            System.out.println();
+        if (!isLoaded) {
+            JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
+        //Gets user selection.
+        type = (String) JOptionPane.showInputDialog(null, "What type of items are you looking for?",
+                "Enter a menu choice", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+
         //Prints inventory based on item type.
-        switch (type) {
+        switch (type.toLowerCase()) {
             case "books":
                 for (Book book : bookCollection) {
-                    System.out.printf("ID: %d, %s, %s, Genre: %s, Number of Pages: %d, Number of Copies: %d%n%n", book.getId(), book.getName(), book.getAuthor(), book.getGenre(), book.getNumPages(), book.getCopies());
+                    itemList.append(String.format("ID: %d, %s, %s, Genre: %s, Number of Pages: %d, Number of Copies: %d%n%n", book.getId(), book.getName(), book.getAuthor(), book.getGenre(), book.getNumPages(), book.getCopies()));
                 }
                 break;
 
             case "movies":
                 for (Movie movie : movieCollection) {
-                    System.out.printf("ID: %d, %s, Genre: %s, Number of Minutes: %d, Number of Copies: %d%n%n", movie.getId(), movie.getName(), movie.getGenre(), movie.getLengthMinutes(), movie.getCopies());
+                    itemList.append(String.format("ID: %d, %s, Genre: %s, Number of Minutes: %d, Number of Copies: %d%n%n", movie.getId(), movie.getName(), movie.getGenre(), movie.getLengthMinutes(), movie.getCopies()));
                 }
                 break;
 
             case "music":
                 for (Music music : musicCollection) {
-                    System.out.printf("ID: %d, Album: %s, Artist: %s, Genre: %s, Number of Songs: %d, Number of Copies: %d%n%n", music.getId(), music.getName(), music.getArtist(), music.getGenre(), music.getNumSongs(), music.getCopies());
+                    itemList.append(String.format("ID: %d, Album: %s, Artist: %s, Genre: %s, Number of Songs: %d, Number of Copies: %d%n%n", music.getId(), music.getName(), music.getArtist(), music.getGenre(), music.getNumSongs(), music.getCopies()));
                 }
                 break;
             default:
-                System.out.println("Invalid Type!");
+                JOptionPane.showMessageDialog(null, "Invalid type!", "", JOptionPane.ERROR_MESSAGE);
         }
+        JOptionPane.showMessageDialog(null, itemList.toString(), type, JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -127,7 +146,7 @@ public class DataManagerGUI {
             }
             if (status == JFileChooser.CANCEL_OPTION)
                 JOptionPane.showMessageDialog(null, "No File loaded.", "", JOptionPane.INFORMATION_MESSAGE);
-                return;
+            return;
         }
         try {
             fileReader = new Scanner(new File(filename));
@@ -162,17 +181,34 @@ public class DataManagerGUI {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
+        isLoaded = true;
     }
 
     /**
      * Saves item data to a file.
      */
     public static void saveFile() {
-        System.out.print("Enter a file name to save to: ");
+        if (!isLoaded) {
+            JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String fileName = "";
+        JFileChooser fileChooser = new JFileChooser(".");
+        //Filters file types to save
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text File", "txt");
+        fileChooser.setFileFilter(filter);
+        int status = fileChooser.showSaveDialog(null);
+        if (status == JFileChooser.APPROVE_OPTION) {
+            fileName = fileChooser.getSelectedFile().getPath();
+        }
+        if (status == JFileChooser.CANCEL_OPTION) {
+            JOptionPane.showMessageDialog(null, "No File saved.", "", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         try {
-            PrintWriter pw = new PrintWriter(scan.nextLine());
-            System.out.println();
+            //Gets file name and extension.
+            PrintWriter pw = new PrintWriter(fileName + "." + filter.getExtensions()[0]);
 
             //Prints all books, movies, and music into file.
 
@@ -197,14 +233,15 @@ public class DataManagerGUI {
      */
     private static boolean getID() {
         //Prompts user for id number.
-        System.out.print("Enter the item's id: ");
-        id = scan.nextInt();
-        scan.nextLine();
-        System.out.println();
-
+        try {
+            id = Integer.parseInt(JOptionPane.showInputDialog("Enter Item ID Number", ""));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Not a valid number!", "", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
         //If id number is null return false.
         if (library.get(id) == null) {
-            System.out.println("Invalid item ID!");
+            JOptionPane.showMessageDialog(null, "Invalid ID Number!", "", JOptionPane.ERROR_MESSAGE);
             return false;
 
             //Else id number must be in library, therefore return true.
