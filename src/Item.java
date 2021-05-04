@@ -32,15 +32,6 @@ public abstract class Item {
     }
 
     /**
-     * Sets ID.
-     *
-     * @param id ID number
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
      * Gets number of copies.
      *
      * @return Number of copies
@@ -68,15 +59,6 @@ public abstract class Item {
     }
 
     /**
-     * Gets name of media.
-     *
-     * @param name Name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * Gets genre of media.
      *
      * @return Genre
@@ -85,12 +67,4 @@ public abstract class Item {
         return this.genre;
     }
 
-    /**
-     * Sets Genre of media.
-     *
-     * @param genre Genre
-     */
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
 }

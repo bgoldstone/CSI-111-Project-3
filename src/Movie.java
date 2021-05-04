@@ -5,11 +5,6 @@ public class Movie extends Item {
         super(id, copies, name, genre);
         this.lengthMinutes = lengthMinutes;
     }
-
-    public void setLengthMinutes(int lengthMinutes) {
-        this.lengthMinutes = lengthMinutes;
-    }
-
     public int getLengthMinutes(){
         return this.lengthMinutes;
     }

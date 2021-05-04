@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -12,16 +13,13 @@ public class DataManager {
     private static Scanner scan;
     private static int id;
     private static String type;
-    private static Book tempBook;
-    private static Music tempMusic;
-    private static Movie tempMovie;
 
 
     public DataManager() {
-        this.bookCollection = new LinkedList<>();
-        this.musicCollection = new LinkedList<>();
-        this.movieCollection = new LinkedList<>();
-        this.library = new HashMap<>();
+        bookCollection = new LinkedList<>();
+        musicCollection = new LinkedList<>();
+        movieCollection = new LinkedList<>();
+        library = new HashMap<>();
         scan = new Scanner(System.in);
     }
 
@@ -65,10 +63,13 @@ public class DataManager {
     }
 
     public static void getItemType() {
-        type = "";
-        while (type != "books" && type != "movies" && type != "music") {
-            System.out.print("Would you like to see \nBooks,\nMovies, \n or Music\n(Books, Movies, Music)? ");
+        System.out.print("Would you like to see \nBooks,\nMovies, \n or Music\n(Books, Movies, Music)? ");
+        type = scan.nextLine().toLowerCase();
+        System.out.println();
+        while (!type.equals("books") && !type.equals("movies") && !type.equals("music")) {
+            System.out.print("Invalid Option\nWould you like to see \nBooks,\nMovies, \n or Music\n(Books, Movies, Music)? ");
             type = scan.nextLine().toLowerCase();
+            System.out.println();
         }
         switch (scan.nextLine()) {
             case "Books":
@@ -91,15 +92,17 @@ public class DataManager {
         }
     }
 
+    /**
+     * Loads item data from a file.
+     */
     public static void loadFile() {
         File file;
         int id;
-        int Name;
-        System.out.print("Enter a file name:");
+        System.out.print("Enter a file name to load:");
         file = new File(scan.nextLine());
         System.out.println();
         while (!file.exists()) {
-            System.out.print("Enter a file name:");
+            System.out.print("Enter a file name to load:");
             file = new File(scan.nextLine());
             System.out.println();
         }
@@ -109,21 +112,22 @@ public class DataManager {
             while (fileReader.hasNextLine()) {
                 id = fileReader.nextInt();
                 type = fileReader.next();
-                if (type == "Book") {
-                    tempBook = new Book(id, fileReader.next(), fileReader.next(), fileReader.next(), fileReader.nextInt(), fileReader.nextInt());
-                    library.put(id, tempBook);
-                    bookCollection.add(tempBook);
-
-                } else if (type == "Movie") {
-                    tempMovie = new Movie(id, fileReader.next(), fileReader.next(), fileReader.nextInt(), fileReader.nextInt());
-                    library.put(id, tempMovie);
-                    movieCollection.add(tempMovie);
-                    
-                } else if (type == "Music") {
-                    tempMusic = new Music(id, fileReader.next(), fileReader.next(), fileReader.next(), fileReader.nextInt(), fileReader.nextInt());
-                    library.put(id, tempMusic);
-                    musicCollection.add(tempMusic);
-
+                switch (type) {
+                    case "Book" -> {
+                        Book tempBook = new Book(id, fileReader.next(), fileReader.next(), fileReader.next(), fileReader.nextInt(), fileReader.nextInt());
+                        library.put(id, tempBook);
+                        bookCollection.add(tempBook);
+                    }
+                    case "Movie" -> {
+                        Movie tempMovie = new Movie(id, fileReader.next(), fileReader.next(), fileReader.nextInt(), fileReader.nextInt());
+                        library.put(id, tempMovie);
+                        movieCollection.add(tempMovie);
+                    }
+                    case "Music" -> {
+                        Music tempMusic = new Music(id, fileReader.next(), fileReader.next(), fileReader.next(), fileReader.nextInt(), fileReader.nextInt());
+                        library.put(id, tempMusic);
+                        musicCollection.add(tempMusic);
+                    }
                 }
                 scan.nextLine();
             }
@@ -135,10 +139,33 @@ public class DataManager {
     }
 
     /**
+     * Saves item data to a file.
+     */
+    public static void saveFile() {
+        System.out.print("Enter a file name to save to :");
+        try {
+            PrintWriter pw = new PrintWriter(scan.nextLine());
+            System.out.println();
+            for (Book book : bookCollection) {
+                pw.printf("%d,Book,%s,%s,%s,%d,%d%n", book.getId(), book.getName(), book.getAuthor(), book.getGenre(), book.getNumPages(), book.getCopies());
+            }
+            for (Movie movie : movieCollection) {
+                pw.printf("%d,Movie,%s,%s,%d,%d%n", movie.getId(), movie.getName(), movie.getGenre(), movie.getLengthMinutes(), movie.getCopies());
+            }
+            for (Music music : musicCollection) {
+                pw.printf("%d,Music,%s,%s,%s,%d,%d%n", music.getId(), music.getName(), music.getArtist(), music.getGenre(), music.getNumSongs(), music.getCopies());
+            }
+            pw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Prompts user for ID number, sets ID number, and checks if valid id number.
      * Returns true if valid id and false if not.
      */
-    public static boolean getID() {
+    private static boolean getID() {
         System.out.print("Enter the item's id: ");
         id = scan.nextInt();
         scan.nextLine();
@@ -152,15 +179,3 @@ public class DataManager {
         }
     }
 }
-
-/*
-if(library.get(id) instanceof Book){
-
-        }else if(library.get(id) instanceof Movie){
-
-        } else if(library.get(id) instanceof Music){
-
-        }else{
-            System.out.println("Not an item!");
-        }
- */
