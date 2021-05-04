@@ -5,11 +5,11 @@ public class Book extends Item {
     /**
      * Number of pages in the book.
      */
-    private int numPages;
+    private final int numPages;
     /**
      * Author of the book.
      */
-    private String author;
+    private final String author;
 
     /**
      * Book Constructor.
@@ -25,24 +25,6 @@ public class Book extends Item {
         // Calls Item Constructor
         super(id, copies, name, genre);
         this.numPages = numPages;
-        this.author = author;
-    }
-
-    /**
-     * Sets Number of pages in book.
-     *
-     * @param numPages Number of pages
-     */
-    public void setNumPages(int numPages) {
-        this.numPages = numPages;
-    }
-
-    /**
-     * Sets Author of book.
-     *
-     * @param author Author
-     */
-    public void setAuthor(String author) {
         this.author = author;
     }
 

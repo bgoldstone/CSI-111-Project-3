@@ -3,9 +3,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GUI extends JFrame{
+public class GUI extends JFrame {
     private JPanel panel;
-    private JComboBox dropDownMenu;
     private JButton checkOutButton;
     private JButton checkInButton;
     private JButton loadFileButton;
@@ -22,7 +21,7 @@ public class GUI extends JFrame{
         dm = new DataManagerGUI();
 
         //Sets size
-        panel.setPreferredSize(new Dimension(500,500));
+        panel.setPreferredSize(new Dimension(500, 500));
 
         //Basically centers on screen
         this.setLocationRelativeTo(null);
@@ -63,6 +62,7 @@ public class GUI extends JFrame{
             }
         });
     }
+
     public static void main(String[] args) {
         JFrame frame = new GUI("Library");
         frame.setVisible(true);

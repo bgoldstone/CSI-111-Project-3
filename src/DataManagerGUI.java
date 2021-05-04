@@ -12,10 +12,9 @@ public class DataManagerGUI {
     private static LinkedList<Book> bookCollection;
     private static LinkedList<Music> musicCollection;
     private static LinkedList<Movie> movieCollection;
-    private static Scanner scan;
     private static int id;
     private static String type;
-    private static String[] options = {"Books", "Movies", "Music"};
+    private static final String[] options = {"Books", "Movies", "Music"};
     private static StringBuilder itemList;
     private static boolean isLoaded = false;
 
@@ -25,7 +24,6 @@ public class DataManagerGUI {
         musicCollection = new LinkedList<>();
         movieCollection = new LinkedList<>();
         library = new HashMap<>();
-        scan = new Scanner(System.in);
         itemList = new StringBuilder();
     }
 
@@ -135,17 +133,6 @@ public class DataManagerGUI {
         }
         if (status == JFileChooser.CANCEL_OPTION) {
             JOptionPane.showMessageDialog(null, "No File loaded.", "", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-        //If invalid file.
-        while (!new File(filename).exists()) {
-            JOptionPane.showMessageDialog(null, "Invalid File!", "", JOptionPane.ERROR_MESSAGE);
-            status = fileChooser.showOpenDialog(null);
-            if (status == JFileChooser.APPROVE_OPTION) {
-                filename = fileChooser.getSelectedFile().getPath();
-            }
-            if (status == JFileChooser.CANCEL_OPTION)
-                JOptionPane.showMessageDialog(null, "No File loaded.", "", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         try {
