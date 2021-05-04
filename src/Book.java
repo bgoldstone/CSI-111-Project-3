@@ -21,7 +21,7 @@ public class Book extends Item {
      * @param numPages Number of Pages in book
      * @param author   Author of book
      */
-    public Book(int id, int copies, String name, String genre, int numPages, String author) {
+    public Book(int id, String name, String author, String genre, int numPages, int copies) {
         // Calls Item Constructor
         super(id, copies, name, genre);
         this.numPages = numPages;

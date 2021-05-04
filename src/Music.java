@@ -1,7 +1,7 @@
 public class Music extends Item{
     private int numSongs;
     private String artist;
-    public Music(int id, int copies, String name, String genre, int numSongs, String artist){
+    public Music(int id, String name, String artist, String genre, int numSongs, int copies){
         super(id,copies,name,genre);
         this.numSongs = numSongs;
         this.artist = artist;
