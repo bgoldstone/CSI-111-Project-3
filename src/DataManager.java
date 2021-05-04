@@ -1,3 +1,4 @@
+import javax.swing.JFileChooser;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -42,7 +43,7 @@ public class DataManager {
         if (getID()) {
 
             //Checks if has any copies
-            if (!(library.get(id).getCopies() >= 1)) {
+            if ((library.get(id).getCopies() >= 1)) {
                 library.get(id).setCopies(library.get(id).getCopies() - 1);
                 System.out.printf("Successfully checked out %s!%n", library.get(id).getName());
             } else {
@@ -58,37 +59,44 @@ public class DataManager {
     public static void getNumberOfCopies() {
         //Prints name and number of copies.
         if (getID()) {
-            System.out.printf("%s  Number of copies: %d", library.get(id).getName(), library.get(id).getCopies());
+            System.out.printf("%s Number of copies: %d%n", library.get(id).getName(), library.get(id).getCopies());
         }
     }
 
     public static void getItemType() {
-        System.out.print("Would you like to see \nBooks,\nMovies, \n or Music\n(Books, Movies, Music)? ");
+        //Gets user selection.
+        System.out.print("Would you like to see \nBooks,\nMovies, \nor Music\n(Books, Movies, Music)? ");
         type = scan.nextLine().toLowerCase();
         System.out.println();
+
+        //If invalid string.
         while (!type.equals("books") && !type.equals("movies") && !type.equals("music")) {
             System.out.print("Invalid Option\nWould you like to see \nBooks,\nMovies, \n or Music\n(Books, Movies, Music)? ");
             type = scan.nextLine().toLowerCase();
             System.out.println();
         }
-        switch (scan.nextLine()) {
-            case "Books":
+
+        //Prints inventory based on item type.
+        switch (type) {
+            case "books":
                 for (Book book : bookCollection) {
-                    System.out.printf("%s by %s Genre: %s Number of Copies: %d Number of Pages: %d %n", book.getName(), book.getAuthor(), book.getGenre(), book.getCopies(), book.getNumPages());
+                    System.out.printf("ID: %d, %s, %s, Genre: %s, Number of Pages: %d, Number of Copies: %d%n%n", book.getId(), book.getName(), book.getAuthor(), book.getGenre(), book.getNumPages(), book.getCopies());
                 }
                 break;
 
-            case "Movies":
+            case "movies":
                 for (Movie movie : movieCollection) {
-                    System.out.printf("%s Genre: %s Number of Copies: %d Number of Minutes: %d %n", movie.getName(), movie.getGenre(), movie.getCopies(), movie.getLengthMinutes());
+                    System.out.printf("ID: %d, %s, Genre: %s, Number of Minutes: %d, Number of Copies: %d%n%n", movie.getId(), movie.getName(), movie.getGenre(), movie.getLengthMinutes(), movie.getCopies());
                 }
                 break;
 
-            case "Music":
+            case "music":
                 for (Music music : musicCollection) {
-                    System.out.printf("Album: %s Artist: %s Genre: %s Number of Copies: %d Number of Songs: %d %n", music.getName(), music.getArtist(), music.getGenre(), music.getCopies(), music.getNumSongs());
+                    System.out.printf("ID: %d, Album: %s, Artist: %s, Genre: %s, Number of Songs: %d, Number of Copies: %d%n%n", music.getId(), music.getName(), music.getArtist(), music.getGenre(), music.getNumSongs(), music.getCopies());
                 }
                 break;
+            default:
+                System.out.println("Invalid Type!");
         }
     }
 
@@ -96,40 +104,57 @@ public class DataManager {
      * Loads item data from a file.
      */
     public static void loadFile() {
-        File file;
+        String filename = "";
+        String[] line;
         int id;
-        System.out.print("Enter a file name to load: ");
-        file = new File(scan.nextLine());
-        System.out.println();
-        while (!file.exists()) {
-            System.out.print("Enter a file name to load: ");
-            file = new File(scan.nextLine());
-            System.out.println();
+        Scanner fileReader;
+        //Gets filename from JFileChooser.
+        JFileChooser fileChooser = new JFileChooser(".");
+        int status = fileChooser.showOpenDialog(null);
+        if (status == JFileChooser.APPROVE_OPTION) {
+            filename = fileChooser.getSelectedFile().getPath();
+        }
+        if (status == JFileChooser.CANCEL_OPTION)
+            return;
+
+        //If invalid file.
+        while (!new File(filename).exists()) {
+            System.out.println("Invalid File!");
+            status = fileChooser.showOpenDialog(null);
+            if (status == JFileChooser.APPROVE_OPTION) {
+                filename = fileChooser.getSelectedFile().getPath();
+            }
+            if (status == JFileChooser.CANCEL_OPTION)
+                return;
         }
         try {
-            Scanner fileReader = new Scanner(file);
+            fileReader = new Scanner(new File(filename));
             fileReader.useDelimiter(",");
+
+            //While file has lines, read!
             while (fileReader.hasNextLine()) {
-                id = fileReader.nextInt();
-                type = fileReader.next();
+                line = fileReader.nextLine().split(",");
+                id = Integer.parseInt(line[0]);
+                type = line[1];
+
+                //Determines Object type
                 switch (type) {
                     case "Book" -> {
-                        Book tempBook = new Book(id, fileReader.next(), fileReader.next(), fileReader.next(), fileReader.nextInt(), fileReader.nextInt());
+                        Book tempBook = new Book(id, line[2], line[3], line[4], Integer.parseInt(line[5]), Integer.parseInt(line[6]));
                         library.put(id, tempBook);
                         bookCollection.add(tempBook);
                     }
                     case "Movie" -> {
-                        Movie tempMovie = new Movie(id, fileReader.next(), fileReader.next(), fileReader.nextInt(), fileReader.nextInt());
+                        Movie tempMovie = new Movie(id, line[2], line[3], Integer.parseInt(line[4]), Integer.parseInt(line[5]));
                         library.put(id, tempMovie);
                         movieCollection.add(tempMovie);
                     }
                     case "Music" -> {
-                        Music tempMusic = new Music(id, fileReader.next(), fileReader.next(), fileReader.next(), fileReader.nextInt(), fileReader.nextInt());
+                        Music tempMusic = new Music(id, line[2], line[3], line[4], Integer.parseInt(line[5]), Integer.parseInt(line[6]));
                         library.put(id, tempMusic);
                         musicCollection.add(tempMusic);
                     }
                 }
-                scan.nextLine();
             }
             fileReader.close();
         } catch (FileNotFoundException e) {
@@ -142,10 +167,13 @@ public class DataManager {
      * Saves item data to a file.
      */
     public static void saveFile() {
-        System.out.print("Enter a file name to save to :");
+        System.out.print("Enter a file name to save to: ");
         try {
             PrintWriter pw = new PrintWriter(scan.nextLine());
             System.out.println();
+
+            //Prints all books, movies, and music into file.
+
             for (Book book : bookCollection) {
                 pw.printf("%d,Book,%s,%s,%s,%d,%d%n", book.getId(), book.getName(), book.getAuthor(), book.getGenre(), book.getNumPages(), book.getCopies());
             }
@@ -166,14 +194,18 @@ public class DataManager {
      * Returns true if valid id and false if not.
      */
     private static boolean getID() {
+        //Prompts user for id number.
         System.out.print("Enter the item's id: ");
         id = scan.nextInt();
         scan.nextLine();
         System.out.println();
 
+        //If id number is null return false.
         if (library.get(id) == null) {
             System.out.println("Invalid item ID!");
             return false;
+
+            //Else id number must be in library, therefore return true.
         } else {
             return true;
         }

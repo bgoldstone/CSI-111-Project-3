@@ -41,17 +41,8 @@ public class UserInterface {
                 default:
                     System.out.println("Invalid Option!");
             }
+            System.out.println();
         }
 
     }
 }
-
-/*
-Check-out an item
-Check-in an item
-Checking item availability
-List all information for a particular type of item
-Load the inventory file
-Save the inventory file
-Exit the program
- */
