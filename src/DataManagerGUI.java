@@ -41,7 +41,7 @@ public class DataManagerGUI {
 
         if (getID()) {
             library.get(id).setCopies(library.get(id).getCopies() + 1);
-            System.out.printf("Successfully checked in %s!%n", library.get(id).getName());
+            JOptionPane.showMessageDialog(null, "Successfully checked in " + library.get(id).getName() + "!", "", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
