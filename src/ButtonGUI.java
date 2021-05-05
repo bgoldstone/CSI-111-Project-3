@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GUI extends JFrame {
+public class ButtonGUI extends JFrame {
     private JPanel panel;
     private JButton checkOutButton;
     private JButton checkInButton;
@@ -13,7 +13,7 @@ public class GUI extends JFrame {
     private JButton saveFileButton;
     private DataManagerGUI dm;
 
-    public GUI(String title) {
+    public ButtonGUI(String title) {
         super(title);
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         this.setContentPane(panel);
@@ -64,7 +64,7 @@ public class GUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new GUI("Library");
+        JFrame frame = new ButtonGUI("Library");
         frame.setVisible(true);
     }
 
