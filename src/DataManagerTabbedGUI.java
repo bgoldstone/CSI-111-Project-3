@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class DataManagerGUI {
+public class DataManagerTabbedGUI {
     private static HashMap<Integer, Item> library;
     private static LinkedList<Book> bookCollection;
     private static LinkedList<Music> musicCollection;
@@ -19,12 +19,24 @@ public class DataManagerGUI {
     private static boolean isLoaded = false;
 
 
-    public DataManagerGUI() {
+    public DataManagerTabbedGUI() {
         bookCollection = new LinkedList<>();
         musicCollection = new LinkedList<>();
         movieCollection = new LinkedList<>();
         library = new HashMap<>();
         itemList = new StringBuilder();
+    }
+
+    /**
+     * Sets ID number
+     * @param id ID number
+     */
+    public static void setId(int id) {
+        DataManagerTabbedGUI.id = id;
+        if (library.get(id) == null) {
+            JOptionPane.showMessageDialog(null, "Invalid ID Number!", "", JOptionPane.ERROR_MESSAGE);
+            DataManagerTabbedGUI.id = 0;
+        }
     }
 
     /**
@@ -37,10 +49,9 @@ public class DataManagerGUI {
             return;
         }
 
-        if (getID()) {
-            library.get(id).setCopies(library.get(id).getCopies() + 1);
-            JOptionPane.showMessageDialog(null, "Successfully checked in " + library.get(id).getName() + "!", "", JOptionPane.INFORMATION_MESSAGE);
-        }
+        library.get(id).setCopies(library.get(id).getCopies() + 1);
+        JOptionPane.showMessageDialog(null, "Successfully checked in " + library.get(id).getName() + "!", "", JOptionPane.INFORMATION_MESSAGE);
+        id = 0;
     }
 
     /**
@@ -53,46 +64,39 @@ public class DataManagerGUI {
             return;
         }
 
-        if (getID()) {
-
-            //Checks if has any copies
-            if ((library.get(id).getCopies() >= 1)) {
-                library.get(id).setCopies(library.get(id).getCopies() - 1);
-                JOptionPane.showMessageDialog(null, "Successfully checked out " + library.get(id).getName() + "!", "", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "Not enough copies of " + library.get(id).getName() + "!", "", JOptionPane.ERROR_MESSAGE);
-            }
+        //Checks if has any copies
+        if ((library.get(id).getCopies() >= 1)) {
+            library.get(id).setCopies(library.get(id).getCopies() - 1);
+            JOptionPane.showMessageDialog(null, "Successfully checked out " + library.get(id).getName() + "!", "", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Not enough copies of " + library.get(id).getName() + "!", "", JOptionPane.ERROR_MESSAGE);
         }
-
+        id = 0;
     }
 
     /**
      * Gets number of Copies of Item.
      */
-    public static void getNumberOfCopies() {
+    public static String getNumberOfCopies() {
         //Prints name and number of copies.
         if (!isLoaded) {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
-            return;
+            return "";
+        } else {
+            return library.get(id).getName() + " Number of copies: " + library.get(id).getCopies() + "!";
         }
 
-        if (getID()) {
-            JOptionPane.showMessageDialog(null, library.get(id).getName() + " Number of copies: " + library.get(id).getCopies() + "!", "", JOptionPane.INFORMATION_MESSAGE);
-        }
     }
 
-    public static void getItemType() {
+    public static String getItemType(String type) {
         if (!isLoaded) {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
-            return;
+            return "";
         }
 
         //Gets user selection.
-        type = (String) JOptionPane.showInputDialog(null, "What type of items are you looking for?",
-                "Enter a menu choice", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-
-
         //Prints inventory based on item type.
+        itemList.delete(0, itemList.length());
         switch (type.toLowerCase()) {
             case "books":
                 for (Book book : bookCollection) {
@@ -111,10 +115,8 @@ public class DataManagerGUI {
                     itemList.append(String.format("ID: %d, Album: %s, Artist: %s, Genre: %s, Number of Songs: %d, Number of Copies: %d%n%n", music.getId(), music.getName(), music.getArtist(), music.getGenre(), music.getNumSongs(), music.getCopies()));
                 }
                 break;
-            default:
-                JOptionPane.showMessageDialog(null, "Invalid type!", "", JOptionPane.ERROR_MESSAGE);
         }
-        JOptionPane.showMessageDialog(null, itemList.toString(), type, JOptionPane.INFORMATION_MESSAGE);
+        return itemList.toString();
     }
 
     /**
@@ -211,29 +213,6 @@ public class DataManagerGUI {
             pw.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * Prompts user for ID number, sets ID number, and checks if valid id number.
-     * Returns true if valid id and false if not.
-     */
-    private static boolean getID() {
-        //Prompts user for id number.
-        try {
-            id = Integer.parseInt(JOptionPane.showInputDialog("Enter Item ID Number", ""));
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Not a valid number!", "", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        //If id number is null return false.
-        if (library.get(id) == null) {
-            JOptionPane.showMessageDialog(null, "Invalid ID Number!", "", JOptionPane.ERROR_MESSAGE);
-            return false;
-
-            //Else id number must be in library, therefore return true.
-        } else {
-            return true;
         }
     }
 }
