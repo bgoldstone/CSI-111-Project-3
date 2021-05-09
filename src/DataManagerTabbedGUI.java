@@ -8,15 +8,15 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class DataManagerTabbedGUI {
-    private static HashMap<Integer, Item> library;
-    private static LinkedList<Book> bookCollection;
-    private static LinkedList<Music> musicCollection;
-    private static LinkedList<Movie> movieCollection;
-    private static int id;
-    private static String type;
-    private static final String[] options = {"Books", "Movies", "Music"};
-    private static StringBuilder itemList;
-    private static boolean isLoaded = false;
+    private HashMap<Integer, Item> library;
+    private LinkedList<Book> bookCollection;
+    private LinkedList<Music> musicCollection;
+    private LinkedList<Movie> movieCollection;
+    private int id;
+    private String type;
+    private StringBuilder itemList;
+    private boolean isLoaded = false;
+    private FileNameExtensionFilter filter = new FileNameExtensionFilter("Text File (*.txt)", "txt");
 
 
     public DataManagerTabbedGUI() {
@@ -29,20 +29,21 @@ public class DataManagerTabbedGUI {
 
     /**
      * Sets ID number
+     *
      * @param id ID number
      */
-    public static void setId(int id) {
-        DataManagerTabbedGUI.id = id;
+    public void setId(int id) {
+        this.id = id;
         if (library.get(id) == null) {
             JOptionPane.showMessageDialog(null, "Invalid ID Number!", "", JOptionPane.ERROR_MESSAGE);
-            DataManagerTabbedGUI.id = 0;
+            this.id = 0;
         }
     }
 
     /**
      * Attempts to check-in an item.
      */
-    public static void checkIn() {
+    public void checkIn() {
         //Gets and Checks ID.
         if (!isLoaded) {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
@@ -57,13 +58,13 @@ public class DataManagerTabbedGUI {
     /**
      * Attempts to check-out an item.
      */
-    public static void checkOut() {
+    public void checkOut() {
         //Gets and Checks ID.
         if (!isLoaded) {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        System.out.println(id);
         //Checks if has any copies
         if ((library.get(id).getCopies() >= 1)) {
             library.get(id).setCopies(library.get(id).getCopies() - 1);
@@ -77,7 +78,7 @@ public class DataManagerTabbedGUI {
     /**
      * Gets number of Copies of Item.
      */
-    public static String getNumberOfCopies() {
+    public String getNumberOfCopies() {
         //Prints name and number of copies.
         if (!isLoaded) {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
@@ -88,7 +89,7 @@ public class DataManagerTabbedGUI {
 
     }
 
-    public static String getItemType(String type) {
+    public String getItemType(String type) {
         if (!isLoaded) {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
             return "";
@@ -122,13 +123,14 @@ public class DataManagerTabbedGUI {
     /**
      * Loads item data from a file.
      */
-    public static void loadFile() {
+    public void loadFile() {
         String filename = "";
         String[] line;
         int id;
         Scanner fileReader;
         //Gets filename from JFileChooser.
         JFileChooser fileChooser = new JFileChooser(".");
+        fileChooser.setFileFilter(filter);
         int status = fileChooser.showOpenDialog(null);
         if (status == JFileChooser.APPROVE_OPTION) {
             filename = fileChooser.getSelectedFile().getPath();
@@ -144,6 +146,8 @@ public class DataManagerTabbedGUI {
             //While file has lines, read!
             while (fileReader.hasNextLine()) {
                 line = fileReader.nextLine().split(",");
+                if(line.length != 7)
+                    throw new IndexOutOfBoundsException();
                 id = Integer.parseInt(line[0]);
                 type = line[1];
 
@@ -169,6 +173,8 @@ public class DataManagerTabbedGUI {
             fileReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (NumberFormatException | NullPointerException | IndexOutOfBoundsException exception){
+            JOptionPane.showMessageDialog(null, "Invalid File", "", JOptionPane.ERROR_MESSAGE);
         }
         isLoaded = true;
     }
@@ -176,7 +182,7 @@ public class DataManagerTabbedGUI {
     /**
      * Saves item data to a file.
      */
-    public static void saveFile() {
+    public void saveFile() {
         if (!isLoaded) {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
             return;
@@ -184,8 +190,8 @@ public class DataManagerTabbedGUI {
 
         String fileName = "";
         JFileChooser fileChooser = new JFileChooser(".");
+
         //Filters file types to save
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text File", "txt");
         fileChooser.setFileFilter(filter);
         int status = fileChooser.showSaveDialog(null);
         if (status == JFileChooser.APPROVE_OPTION) {

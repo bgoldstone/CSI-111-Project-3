@@ -8,15 +8,15 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class DataManagerButtonGUI {
-    private static HashMap<Integer, Item> library;
-    private static LinkedList<Book> bookCollection;
-    private static LinkedList<Music> musicCollection;
-    private static LinkedList<Movie> movieCollection;
-    private static int id;
-    private static String type;
-    private static final String[] options = {"Books", "Movies", "Music"};
-    private static StringBuilder itemList;
-    private static boolean isLoaded = false;
+    private HashMap<Integer, Item> library;
+    private LinkedList<Book> bookCollection;
+    private LinkedList<Music> musicCollection;
+    private LinkedList<Movie> movieCollection;
+    private int id;
+    private String type;
+    private final String[] options = {"Books", "Movies", "Music"};
+    private StringBuilder itemList;
+    private boolean isLoaded = false;
 
 
     public DataManagerButtonGUI() {
@@ -30,7 +30,7 @@ public class DataManagerButtonGUI {
     /**
      * Attempts to check-in an item.
      */
-    public static void checkIn() {
+    public void checkIn() {
         //Gets and Checks ID.
         if (!isLoaded) {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
@@ -46,7 +46,7 @@ public class DataManagerButtonGUI {
     /**
      * Attempts to check-out an item.
      */
-    public static void checkOut() {
+    public void checkOut() {
         //Gets and Checks ID.
         if (!isLoaded) {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
@@ -69,7 +69,7 @@ public class DataManagerButtonGUI {
     /**
      * Gets number of Copies of Item.
      */
-    public static void getNumberOfCopies() {
+    public void getNumberOfCopies() {
         //Prints name and number of copies.
         if (!isLoaded) {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
@@ -81,7 +81,7 @@ public class DataManagerButtonGUI {
         }
     }
 
-    public static void getItemType() {
+    public void getItemType() {
         if (!isLoaded) {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
             return;
@@ -93,7 +93,7 @@ public class DataManagerButtonGUI {
 
 
         //Prints inventory based on item type.
-        itemList.delete(0,itemList.length());
+        itemList.delete(0, itemList.length());
         switch (type.toLowerCase()) {
             case "books":
                 for (Book book : bookCollection) {
@@ -121,7 +121,7 @@ public class DataManagerButtonGUI {
     /**
      * Loads item data from a file.
      */
-    public static void loadFile() {
+    public void loadFile() {
         String filename = "";
         String[] line;
         int id;
@@ -143,6 +143,8 @@ public class DataManagerButtonGUI {
             //While file has lines, read!
             while (fileReader.hasNextLine()) {
                 line = fileReader.nextLine().split(",");
+                if (line.length != 7)
+                    throw new IndexOutOfBoundsException();
                 id = Integer.parseInt(line[0]);
                 type = line[1];
 
@@ -168,6 +170,8 @@ public class DataManagerButtonGUI {
             fileReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (NumberFormatException | NullPointerException | IndexOutOfBoundsException exception) {
+            JOptionPane.showMessageDialog(null, "Invalid File", "", JOptionPane.ERROR_MESSAGE);
         }
         isLoaded = true;
     }
@@ -175,7 +179,7 @@ public class DataManagerButtonGUI {
     /**
      * Saves item data to a file.
      */
-    public static void saveFile() {
+    public void saveFile() {
         if (!isLoaded) {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
             return;
@@ -219,7 +223,7 @@ public class DataManagerButtonGUI {
      * Prompts user for ID number, sets ID number, and checks if valid id number.
      * Returns true if valid id and false if not.
      */
-    private static boolean getID() {
+    private boolean getID() {
         //Prompts user for id number.
         try {
             id = Integer.parseInt(JOptionPane.showInputDialog("Enter Item ID Number", ""));

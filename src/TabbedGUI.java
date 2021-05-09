@@ -46,7 +46,6 @@ public class TabbedGUI extends JFrame {
         checkOutOkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dm.checkOut();
                 try {
                     dm.setId(Integer.parseInt(checkOutIDBox.getText()));
                 } catch (NumberFormatException exception) {
@@ -55,6 +54,11 @@ public class TabbedGUI extends JFrame {
                     JOptionPane.showMessageDialog(null, "Please enter a number!", "", JOptionPane.ERROR_MESSAGE);
 
                 }
+                try{
+                dm.checkOut();
+                } catch (NullPointerException exeption) {
+                    JOptionPane.showMessageDialog(null, "Not a valid number! Please enter an integer!", "", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -62,10 +66,14 @@ public class TabbedGUI extends JFrame {
         checkInOkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dm.checkIn();
                 try {
                     dm.setId(Integer.parseInt(checkInIDBox.getText()));
                 } catch (NumberFormatException exception) {
+                    JOptionPane.showMessageDialog(null, "Not a valid number! Please enter an integer!", "", JOptionPane.ERROR_MESSAGE);
+                }
+                try {
+                    dm.checkIn();
+                } catch (NullPointerException exeption) {
                     JOptionPane.showMessageDialog(null, "Not a valid number! Please enter an integer!", "", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -78,7 +86,6 @@ public class TabbedGUI extends JFrame {
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
                 booksTextBox.setText(dm.getItemType("books"));
-                ;
             }
         });
 
@@ -109,7 +116,11 @@ public class TabbedGUI extends JFrame {
                 } catch (NumberFormatException exception) {
                     JOptionPane.showMessageDialog(null, "Not a valid number! Please enter an integer!", "", JOptionPane.ERROR_MESSAGE);
                 }
-                numberOfCopiesTextField.setText(dm.getNumberOfCopies());
+                try {
+                    numberOfCopiesTextField.setText(dm.getNumberOfCopies());
+                } catch (NullPointerException exeption) {
+                    JOptionPane.showMessageDialog(null, "Not a valid number! Please enter an integer!", "", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
