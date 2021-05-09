@@ -17,7 +17,7 @@ public class DataManagerButtonGUI {
     private LinkedList<Movie> movieCollection;
     private int id;
     private String type;
-    private final String[] options = {"Books", "Movies", "Music"};
+    private final String[] OPTIONS = {"Books", "Movies", "Music"};
     private StringBuilder itemList;
     private boolean isLoaded = false;
 
@@ -92,7 +92,7 @@ public class DataManagerButtonGUI {
 
         //Gets user selection.
         type = (String) JOptionPane.showInputDialog(null, "What type of items are you looking for?",
-                "Enter a menu choice", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                "Enter a menu choice", JOptionPane.QUESTION_MESSAGE, null, OPTIONS, OPTIONS[0]);
 
 
         //Prints inventory based on item type.

@@ -10,14 +10,14 @@ import java.util.Scanner;
  * Tells {@link UserInterface} what to do if option is selected.
  */
 public class DataManager {
-    private static HashMap<Integer, Item> library;
-    private static LinkedList<Book> bookCollection;
-    private static LinkedList<Music> musicCollection;
-    private static LinkedList<Movie> movieCollection;
-    private static Scanner scan;
-    private static int id;
-    private static String type;
-    private static boolean isLoaded = false;
+    private HashMap<Integer, Item> library;
+    private LinkedList<Book> bookCollection;
+    private LinkedList<Music> musicCollection;
+    private LinkedList<Movie> movieCollection;
+    private Scanner scan;
+    private int id;
+    private String type;
+    private boolean isLoaded = false;
 
 
     public DataManager() {
@@ -31,7 +31,7 @@ public class DataManager {
     /**
      * Attempts to check-in an item.
      */
-    public static void checkIn() {
+    public void checkIn() {
         if (!isLoaded) {
             System.out.println("No file loaded!!\n");
             return;
@@ -47,7 +47,7 @@ public class DataManager {
     /**
      * Attempts to check-out an item.
      */
-    public static void checkOut() {
+    public void checkOut() {
         if (!isLoaded) {
             System.out.println("No file loaded!!\n");
             return;
@@ -70,7 +70,7 @@ public class DataManager {
     /**
      * Gets number of Copies of Item.
      */
-    public static void getNumberOfCopies() {
+    public void getNumberOfCopies() {
         if (!isLoaded) {
             System.out.println("No file loaded!!\n");
             return;
@@ -82,7 +82,7 @@ public class DataManager {
         }
     }
 
-    public static void getItemType() {
+    public void getItemType() {
         if (!isLoaded) {
             System.out.println("No file loaded!!\n");
             return;
@@ -127,7 +127,7 @@ public class DataManager {
     /**
      * Loads item data from a file.
      */
-    public static void loadFile() {
+    public void loadFile() {
         String filename = "";
         String[] line;
         int id;
@@ -190,7 +190,7 @@ public class DataManager {
     /**
      * Saves item data to a file.
      */
-    public static void saveFile() {
+    public void saveFile() {
         if (!isLoaded) {
             System.out.println("No file loaded!!\n");
             return;
@@ -222,7 +222,7 @@ public class DataManager {
      * Prompts user for ID number, sets ID number, and checks if valid id number.
      * Returns true if valid id and false if not.
      */
-    private static boolean getID() {
+    private boolean getID() {
         //Prompts user for id number.
         System.out.print("Enter the item's id: ");
         id = scan.nextInt();
