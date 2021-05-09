@@ -3,6 +3,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Uses a button interface with mostly JOptionsPane and some JFrame to manage a library and display a library's inventory.
+ */
 public class ButtonGUI extends JFrame {
     private JPanel panelButton;
     private JButton checkOutButton;

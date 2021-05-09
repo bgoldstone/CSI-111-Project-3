@@ -6,7 +6,9 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
-
+/**
+ * Tells {@link TabbedGUI} what to do if certain menu option is hit.
+ */
 public class DataManagerTabbedGUI {
     private HashMap<Integer, Item> library;
     private LinkedList<Book> bookCollection;

@@ -1,7 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+/**
+ * Uses a tabbed interface with mostly JFrame, some JOptionsPane, and JFileChooser to manage a library and display a library's inventory.
+ */
 public class TabbedGUI extends JFrame {
     private JPanel panelTabbed;
     private JRootPane rootPane;

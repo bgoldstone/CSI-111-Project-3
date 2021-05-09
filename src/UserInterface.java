@@ -1,5 +1,8 @@
 import java.util.Scanner;
 
+/**
+ * Command-Line Interface version of the library database management.
+ */
 public class UserInterface {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);

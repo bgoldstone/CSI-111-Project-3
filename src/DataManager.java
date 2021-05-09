@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+/**
+ * Tells {@link UserInterface} what to do if option is selected.
+ */
 public class DataManager {
     private static HashMap<Integer, Item> library;
     private static LinkedList<Book> bookCollection;

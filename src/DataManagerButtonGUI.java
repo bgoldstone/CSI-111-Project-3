@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+/**
+ * Tells {@link ButtonGUI} what to do if certain menu option is hit.
+ */
 public class DataManagerButtonGUI {
     private HashMap<Integer, Item> library;
     private LinkedList<Book> bookCollection;
