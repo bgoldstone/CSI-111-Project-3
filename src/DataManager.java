@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
- * Tells {@link UserInterface} what to do if option is selected.
+ * Tells UI what to do if option is selected.
  */
 public class DataManager {
     private HashMap<Integer, Item> library;
