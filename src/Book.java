@@ -1,3 +1,8 @@
+/*
+    Name: Ben Goldstone
+    Date: 5/14/2021
+    Instructor: Professor Joseph Helsing
+ */
 /**
  * Book object of type {@link Item}.
  */
