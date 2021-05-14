@@ -1,5 +1,5 @@
 /**
- * Book object of type Item.
+ * Book object of type {@link Item}.
  */
 public class Book extends Item {
     /**

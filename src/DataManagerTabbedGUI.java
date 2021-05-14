@@ -6,7 +6,11 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
-
+/*
+    Name: Ben Goldstone
+    Date: 5/14/2021
+    Instructor: Professor Joseph Helsing
+ */
 /**
  * Tells {@link TabbedGUI} what to do if certain menu option is hit.
  */

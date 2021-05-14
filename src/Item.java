@@ -1,5 +1,10 @@
+/*
+    Name: Ben Goldstone
+    Date: 5/14/2021
+    Instructor: Professor Joseph Helsing
+ */
 /**
- * Item Superclass
+ * Item Superclass.
  */
 public abstract class Item {
     protected int id;

@@ -1,7 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+/*
+    Name: Ben Goldstone
+    Date: 5/14/2021
+    Instructor: Professor Joseph Helsing
+ */
 /**
  * Uses a tabbed interface with mostly JFrame, some JOptionsPane, and JFileChooser to manage a library and display a library's inventory.
  */
