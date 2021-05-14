@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
+
 /**
  * Tells {@link TabbedGUI} what to do if certain menu option is hit.
  */
@@ -66,7 +67,6 @@ public class DataManagerTabbedGUI {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        System.out.println(id);
         //Checks if has any copies
         if ((library.get(id).getCopies() >= 1)) {
             library.get(id).setCopies(library.get(id).getCopies() - 1);
@@ -84,7 +84,7 @@ public class DataManagerTabbedGUI {
         //Prints name and number of copies.
         if (!isLoaded) {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
-            return "";
+            return " ";
         } else {
             return library.get(id).getName() + " Number of copies: " + library.get(id).getCopies() + "!";
         }
@@ -148,11 +148,14 @@ public class DataManagerTabbedGUI {
             //While file has lines, read!
             while (fileReader.hasNextLine()) {
                 line = fileReader.nextLine().split(",");
-                if(line.length != 7)
-                    throw new IndexOutOfBoundsException();
                 id = Integer.parseInt(line[0]);
                 type = line[1];
-
+                if (line.length != 7 && type.equals("Book"))
+                    throw new IndexOutOfBoundsException();
+                if (line.length != 6 && type.equals("Movie"))
+                    throw new IndexOutOfBoundsException();
+                if (line.length != 7 && type.equals("Music"))
+                    throw new IndexOutOfBoundsException();
                 //Determines Object type
                 switch (type) {
                     case "Book" -> {
@@ -175,7 +178,7 @@ public class DataManagerTabbedGUI {
             fileReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (NumberFormatException | NullPointerException | IndexOutOfBoundsException exception){
+        } catch (NumberFormatException | NullPointerException | IndexOutOfBoundsException exception) {
             JOptionPane.showMessageDialog(null, "Invalid File", "", JOptionPane.ERROR_MESSAGE);
         }
         isLoaded = true;

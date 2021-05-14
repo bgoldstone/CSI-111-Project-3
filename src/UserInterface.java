@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -19,30 +20,40 @@ public class UserInterface {
             System.out.println("6. Save inventory file");
             System.out.println("7. Exit program");
             System.out.print("Enter an option (1,2,3,4,5,6, or 7): ");
-            option = scan.nextInt();
+            try {
+                option = scan.nextInt();
+                scan.nextLine();
+            } catch (InputMismatchException exception) {
+                option = 10;
+                scan.nextLine();
+            }
             System.out.println();
-            switch (option) {
-                case 1:
-                    library.checkOut();
-                    break;
-                case 2:
-                    library.checkIn();
-                    break;
-                case 3:
-                    library.getNumberOfCopies();
-                    break;
-                case 4:
-                    library.getItemType();
-                    break;
-                case 5:
-                    library.loadFile();
-                    break;
-                case 6:
-                    library.saveFile();
-                case 7:
-                    break;
-                default:
-                    System.out.println("Invalid Option!");
+            try {
+                switch (option) {
+                    case 1:
+                        library.checkOut();
+                        break;
+                    case 2:
+                        library.checkIn();
+                        break;
+                    case 3:
+                        library.getNumberOfCopies();
+                        break;
+                    case 4:
+                        library.getItemType();
+                        break;
+                    case 5:
+                        library.loadFile();
+                        break;
+                    case 6:
+                        library.saveFile();
+                    case 7:
+                        break;
+                    default:
+                        System.out.println("Invalid Option!");
+                }
+            } catch (InputMismatchException exeption) {
+                System.out.println("Invalid Option");
             }
             System.out.println();
         }

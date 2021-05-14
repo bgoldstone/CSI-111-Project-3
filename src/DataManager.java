@@ -197,8 +197,11 @@ public class DataManager {
         }
 
         System.out.print("Enter a file name to save to: ");
+        String fileName = scan.nextLine();
+        if (!fileName.endsWith(".txt"))
+            fileName += ".txt";
         try {
-            PrintWriter pw = new PrintWriter(scan.nextLine());
+            PrintWriter pw = new PrintWriter(fileName);
             System.out.println();
 
             //Prints all books, movies, and music into file.

@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
 /**
  * Uses a tabbed interface with mostly JFrame, some JOptionsPane, and JFileChooser to manage a library and display a library's inventory.
  */
@@ -52,14 +53,12 @@ public class TabbedGUI extends JFrame {
                     dm.setId(Integer.parseInt(checkOutIDBox.getText()));
                 } catch (NumberFormatException exception) {
                     JOptionPane.showMessageDialog(null, "Not a valid number! Please enter an integer!", "", JOptionPane.ERROR_MESSAGE);
-                } catch (NullPointerException exception) {
-                    JOptionPane.showMessageDialog(null, "Please enter a number!", "", JOptionPane.ERROR_MESSAGE);
-
+                    return;
+                } catch (NullPointerException ignored) {
                 }
-                try{
-                dm.checkOut();
-                } catch (NullPointerException exeption) {
-                    JOptionPane.showMessageDialog(null, "Not a valid number! Please enter an integer!", "", JOptionPane.ERROR_MESSAGE);
+                try {
+                    dm.checkOut();
+                } catch (NullPointerException ignored) {
                 }
             }
         });
@@ -72,11 +71,11 @@ public class TabbedGUI extends JFrame {
                     dm.setId(Integer.parseInt(checkInIDBox.getText()));
                 } catch (NumberFormatException exception) {
                     JOptionPane.showMessageDialog(null, "Not a valid number! Please enter an integer!", "", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
                 try {
                     dm.checkIn();
-                } catch (NullPointerException exeption) {
-                    JOptionPane.showMessageDialog(null, "Not a valid number! Please enter an integer!", "", JOptionPane.ERROR_MESSAGE);
+                } catch (NullPointerException ignored) {
                 }
             }
         });
@@ -117,11 +116,11 @@ public class TabbedGUI extends JFrame {
                     dm.setId(Integer.parseInt(copiesIDBox.getText()));
                 } catch (NumberFormatException exception) {
                     JOptionPane.showMessageDialog(null, "Not a valid number! Please enter an integer!", "", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
                 try {
                     numberOfCopiesTextField.setText(dm.getNumberOfCopies());
-                } catch (NullPointerException exeption) {
-                    JOptionPane.showMessageDialog(null, "Not a valid number! Please enter an integer!", "", JOptionPane.ERROR_MESSAGE);
+                } catch (NullPointerException ignored) {
                 }
             }
         });

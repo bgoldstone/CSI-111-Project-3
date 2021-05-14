@@ -146,10 +146,14 @@ public class DataManagerButtonGUI {
             //While file has lines, read!
             while (fileReader.hasNextLine()) {
                 line = fileReader.nextLine().split(",");
-                if (line.length != 7)
-                    throw new IndexOutOfBoundsException();
                 id = Integer.parseInt(line[0]);
                 type = line[1];
+                if (line.length != 7 && type.equals("Book"))
+                    throw new IndexOutOfBoundsException();
+                if (line.length != 6 && type.equals("Movie"))
+                    throw new IndexOutOfBoundsException();
+                if (line.length != 7 && type.equals("Music"))
+                    throw new IndexOutOfBoundsException();
 
                 //Determines Object type
                 switch (type) {
