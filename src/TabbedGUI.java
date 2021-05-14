@@ -44,7 +44,6 @@ public class TabbedGUI extends JFrame {
         this.setSize(new Dimension(800, 500));
         //Basically centers on screen
         this.setLocationRelativeTo(null);
-
         //Check Out
         checkOutOkButton.addActionListener(new ActionListener() {
             @Override
@@ -60,6 +59,7 @@ public class TabbedGUI extends JFrame {
                     dm.checkOut();
                 } catch (NullPointerException ignored) {
                 }
+                checkOutIDBox.setText("");
             }
         });
 
@@ -77,6 +77,7 @@ public class TabbedGUI extends JFrame {
                     dm.checkIn();
                 } catch (NullPointerException ignored) {
                 }
+                checkInIDBox.setText("");
             }
         });
 
@@ -122,6 +123,7 @@ public class TabbedGUI extends JFrame {
                     numberOfCopiesTextField.setText(dm.getNumberOfCopies());
                 } catch (NullPointerException ignored) {
                 }
+                copiesIDBox.setText("");
             }
         });
 

@@ -20,6 +20,9 @@ public class DataManagerTabbedGUI {
     private StringBuilder itemList;
     private boolean isLoaded = false;
     private FileNameExtensionFilter filter = new FileNameExtensionFilter("Text File (*.txt)", "txt");
+    private Book tempBook;
+    private Music tempMusic;
+    private Movie tempMovie;
 
 
     public DataManagerTabbedGUI() {
@@ -86,9 +89,20 @@ public class DataManagerTabbedGUI {
             JOptionPane.showMessageDialog(null, "No File is loaded!", "", JOptionPane.ERROR_MESSAGE);
             return " ";
         } else {
-            return library.get(id).getName() + " Number of copies: " + library.get(id).getCopies() + "!";
+            if (library.get(id) instanceof Book) {
+                tempBook = (Book) library.get(id);
+                return String.format("ID: %d, %s, %s, Genre: %s, Number of Pages: %d, Number of Copies: %d%n%n", tempBook.getId(), tempBook.getName(), tempBook.getAuthor(), tempBook.getGenre(), tempBook.getNumPages(), tempBook.getCopies());
+            }
+            if (library.get(id) instanceof Music) {
+                tempMusic = (Music) library.get(id);
+                return String.format("ID: %d, Album: %s, Artist: %s, Genre: %s, Number of Songs: %d, Number of Copies: %d%n%n", tempMusic.getId(), tempMusic.getName(), tempMusic.getArtist(), tempMusic.getGenre(), tempMusic.getNumSongs(), tempMusic.getCopies());
+            }
+            if (library.get(id) instanceof Movie) {
+                tempMovie = (Movie) library.get(id);
+                return String.format("ID: %d, %s, Genre: %s, Number of Minutes: %d, Number of Copies: %d%n%n", tempMovie.getId(), tempMovie.getName(), tempMovie.getGenre(), tempMovie.getLengthMinutes(), tempMovie.getCopies());
+            }
         }
-
+        return "";
     }
 
     public String getItemType(String type) {
@@ -159,17 +173,17 @@ public class DataManagerTabbedGUI {
                 //Determines Object type
                 switch (type) {
                     case "Book" -> {
-                        Book tempBook = new Book(id, line[2], line[3], line[4], Integer.parseInt(line[5]), Integer.parseInt(line[6]));
+                        tempBook = new Book(id, line[2], line[3], line[4], Integer.parseInt(line[5]), Integer.parseInt(line[6]));
                         library.put(id, tempBook);
                         bookCollection.add(tempBook);
                     }
                     case "Movie" -> {
-                        Movie tempMovie = new Movie(id, line[2], line[3], Integer.parseInt(line[4]), Integer.parseInt(line[5]));
+                        tempMovie = new Movie(id, line[2], line[3], Integer.parseInt(line[4]), Integer.parseInt(line[5]));
                         library.put(id, tempMovie);
                         movieCollection.add(tempMovie);
                     }
                     case "Music" -> {
-                        Music tempMusic = new Music(id, line[2], line[3], line[4], Integer.parseInt(line[5]), Integer.parseInt(line[6]));
+                        tempMusic = new Music(id, line[2], line[3], line[4], Integer.parseInt(line[5]), Integer.parseInt(line[6]));
                         library.put(id, tempMusic);
                         musicCollection.add(tempMusic);
                     }
